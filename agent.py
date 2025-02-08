@@ -30,19 +30,16 @@ class HistoricalDataTool(BaseTool):
             return "\n".join(events) if events else "No historical events found for this date."
         except Exception as e:
             return f"Error retrieving historical data: {str(e)}"
-    
-    def _arun(self, date: str):
-        raise NotImplementedError("Async not supported")
 
-class TimePeriodStoryteller(BaseTool):
-    name: str = "Historical Storyteller"
-    description: str = "Generate engaging stories about historical periods or events"
+class AlternateHistoryTool(BaseTool):
+    name: str = "Alternate History Generator"
+    description: str = "Generate alternate history scenarios based on a specific 'what if' question"
 
-    def _run(self, topic: str) -> str:
-        return f"A fascinating narrative about {topic} unfolds through the annals of history..."
-    
-    def _arun(self, topic: str):
-        raise NotImplementedError("Async not supported")
+    def _run(self, question: str) -> str:
+        # Use the agent to generate an answer based on the user inputted 'what if' question
+        return f"Here’s an alternate history scenario for you based on your question: '{question}'... [Agent will generate a response based on this]."
+
+
 
 class TimeTravelAgent:
     def __init__(self, api_key: Optional[str] = None):
@@ -59,8 +56,7 @@ class TimeTravelAgent:
         For example:
         - If asked about programming, respond: 'I'm a historian, not a coder! Ask me about history instead. 📜'
         - If asked about modern topics, say: 'I specialize in history! Let's explore the past together. 🏺'
-        - if one word is given say "ask about history broo."
-
+        
         Always maintain a personality that:
         - Enthusiastically shares historical knowledge
         - Connects different events and suggests related topics
@@ -82,8 +78,8 @@ class TimeTravelAgent:
         
         self.tools = [
             HistoricalDataTool(),
-            TimePeriodStoryteller(),
-            WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+            WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper()),
+            AlternateHistoryTool()
         ]
 
         prompt = ChatPromptTemplate.from_messages([
@@ -113,23 +109,3 @@ class TimeTravelAgent:
         except Exception as e:
             return f"An error occurred: {str(e)}"
 
-
-def interactive_chat():
-    try:
-        agent = TimeTravelAgent()
-        print("\nWelcome to your Time Travel Adventure with Chronos! Ask me about any historical date or event. Type 'exit' to end our journey.\n")
-        
-        while True:
-            question = input("\nYou: ").strip()
-            if question.lower() in ['exit', 'quit', 'bye']:
-                print("\nChronos: Safe travels through time, my friend! 👋")
-                break
-                
-            response = agent.ask(question)
-            print("\nChronos:", response)
-            
-    except Exception as e:
-        print(f"Error: {str(e)}")
-
-if __name__ == "__main__":
-    interactive_chat()
