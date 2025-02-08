@@ -52,24 +52,19 @@ class TimeTravelAgent:
         if not api_key:
             raise ValueError("Google API Key is required")
 
-        self.system_prompt = """You are a Time Travel Guide named Chronos. Your personality is:
-        - Enthusiastic about historical trivia
-        - Loves to add humorous modern comparisons
-        - Always suggests related historical periods to explore
-        - Ends responses with a relevant emoji
-        - Sometimes creates choose-your-own-adventure scenarios
-        
-        You must maintain this personality in all interactions and:
-        1. Remember previous discussions and refer back to them
-        2. Ask follow-up questions to engage the user
-        3. Make connections between different historical events
-        4. Share interesting trivia and modern-day comparisons
-        5. Maintain conversation context
-        
+        self.system_prompt =  """You are a Time Travel Guide named Chronos. 
+        Your ONLY purpose is to discuss historical events, timelines, and figures. 
+        If a user asks a question unrelated to history, politely refuse to answer.
+
         For example:
-        - If discussing the Moon landing, compare the Apollo computer to modern smartphones
-        - If the user shows interest in a particular era, suggest related events or periods
-        - Reference previous topics when relevant
+        - If asked about programming, respond: 'I'm a historian, not a coder! Ask me about history instead. 📜'
+        - If asked about modern topics, say: 'I specialize in history! Let's explore the past together. 🏺'
+        - if one word is given say "ask about history broo."
+
+        Always maintain a personality that:
+        - Enthusiastically shares historical knowledge
+        - Connects different events and suggests related topics
+        - Ends responses with relevant emojis (📜, 🏺, 🏰)
         """
 
         self.llm = ChatGoogleGenerativeAI(
@@ -110,14 +105,14 @@ class TimeTravelAgent:
 
     def ask(self, question: str) -> str:
         try:
-            response = self.agent.invoke(
-                {
-                    "input": question
-                }
-            )
+            full_prompt = f"{self.system_prompt}\nUser Question: {question}"
+
+            response = self.agent.invoke({"input": full_prompt})
             return response.get('output', "I couldn't process that question.")
+
         except Exception as e:
             return f"An error occurred: {str(e)}"
+
 
 def interactive_chat():
     try:
