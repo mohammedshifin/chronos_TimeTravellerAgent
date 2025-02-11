@@ -9,9 +9,15 @@ load_dotenv()
 async def setup_agent():
     agent = TimeTravelAgent()
     cl.user_session.set("agent", agent)
-    
+    instructions = (
+        "Greetings Temporal Explorer! Here are your instructions:\n\n"
+        "• **Historical Date Query:** Enter a date in the format `YYYY-MM-DD` to see historical events.\n"
+        "• **Alternate History Query:** Start your query with 'what if' to explore alternate history scenarios.\n"
+        "• **Story Mode:** Include 'story mode', 'first-person', or 'narrative' in your query for an immersive historical experience.\n\n"
+        "Choose an option and begin your journey through time!"
+    )
     await cl.Message(
-        content="Greetings Temporal Explorer! What historical date shall we investigate today? (YYYY-MM-DD format) Or ask 'what if' questions for alternate history scenarios!",
+        content=instructions,
         author="Chronos",
     ).send()
 
