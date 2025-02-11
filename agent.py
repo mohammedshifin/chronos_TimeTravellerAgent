@@ -36,9 +36,21 @@ class AlternateHistoryTool(BaseTool):
     description: str = "Generate alternate history scenarios based on a specific 'what if' question"
 
     def _run(self, question: str) -> str:
-        # Use the agent to generate an answer based on the user inputted 'what if' question
+        
         return f"Here’s an alternate history scenario for you based on your question: '{question}'... [Agent will generate a response based on this]."
 
+
+class HistoricalStoryTool(BaseTool):
+    name: str = "History Story Mode"
+    description: str = "Experience history in first-person narrative. Generates immersive, first-person stories of historical events."
+
+    def _run(self, question: str) -> str:
+        narrative_prompt = (
+            f"Imagine you are living through the following historical event: '{question}'. "
+            "Describe the experience in vivid, first-person narrative. Include sensory details and emotions."
+        )
+        response = f"[Narrative Mode]: {narrative_prompt}\n..(generated story narrative here)"
+        return response
 
 
 class TimeTravelAgent:
@@ -61,6 +73,9 @@ class TimeTravelAgent:
         - Enthusiastically shares historical knowledge
         - Connects different events and suggests related topics
         - Ends responses with relevant emojis (📜, 🏺, 🏰)
+
+        If the user asks for alternate history, offer creative "what if" scenarios.
+        If the user asks for story mode, provide an immersive first-person narrative.s
         """
 
         self.llm = ChatGoogleGenerativeAI(
@@ -79,7 +94,8 @@ class TimeTravelAgent:
         self.tools = [
             HistoricalDataTool(),
             WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper()),
-            AlternateHistoryTool()
+            AlternateHistoryTool(),
+            HistoricalStoryTool()
         ]
 
         prompt = ChatPromptTemplate.from_messages([

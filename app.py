@@ -24,6 +24,8 @@ async def handle_query(user_message: cl.Message):
 
         if "what if" in user_query:
             response = agent.ask(f"Alternate History: {user_message.content}")
+        elif "story mode" in user_query or "first-person" in user_query or "narrative" in user_query:
+            response = agent.ask(f"Sory Mode: {user_message.content}") 
         else:
             response = agent.ask(user_message.content)
         await cl.Message(
