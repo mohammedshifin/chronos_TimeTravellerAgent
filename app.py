@@ -17,7 +17,7 @@ async def setup_agent():
         "Choose an option and begin your journey through time!"
     )
     await cl.Message(
-        content=instructions,
+        content=instructions ,
         author="Chronos",
     ).send()
 
