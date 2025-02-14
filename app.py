@@ -1,9 +1,6 @@
 import chainlit as cl
 from agent import TimeTravelAgent
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 @cl.on_chat_start
 async def setup_agent():

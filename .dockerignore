@@ -1,0 +1,20 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local virtual environment
+venv/
+
+# Chainlit local cache folder
+.chainlit/
+
+# Environment variables / secrets
+.env
+
+# Git-related files
+.git
+.gitignore
+
+# OS-specific hidden files
+.DS_Store
+Thumbs.db
