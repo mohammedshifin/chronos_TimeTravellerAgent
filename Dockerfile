@@ -1,18 +1,20 @@
-# Use an official Python slim image
-FROM python:3.9-slim
+# Use the official Python image as base
+FROM python:3.10
 
-# Set working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy requirements and install dependencies
+# Copy the requirements file and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your application code
+# Copy the rest of the application code
 COPY . .
 
-# Expose the port Chainlit will run on
-EXPOSE 7860
+# Expose the port Chainlit runs on
+EXPOSE 8000
 
-# Start your Chainlit app ensuring it listens on all interfaces
-CMD ["chainlit", "run", "app.py", "--host", "0.0.0.0", "--port", "7860"]
+# Command to run the Chainlit app
+# In your Dockerfile CMD:
+    CMD ["chainlit", "run", "app.py", "--host", "0.0.0.0", "--port", "8000"]
+

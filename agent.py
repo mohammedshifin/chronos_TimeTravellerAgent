@@ -57,7 +57,7 @@ class TimeTravelAgent:
     def __init__(self, api_key: Optional[str] = None):
         load_dotenv()
         
-        api_key = api_key or os.getenv('GOOGLE_API_KEY')
+        api_key =os.getenv('GOOGLE_API_KEY')
         if not api_key:
             raise ValueError("Google API Key is required")
 

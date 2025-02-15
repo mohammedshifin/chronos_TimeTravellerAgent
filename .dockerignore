@@ -9,7 +9,7 @@ venv/
 .chainlit/
 
 # Environment variables / secrets
-.env
+# .env
 
 # Git-related files
 .git
